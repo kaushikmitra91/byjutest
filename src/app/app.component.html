@@ -1,0 +1,43 @@
+<div *ngIf='loading'>Loading .....</div>
+<div class="wrapper container-fluid" *ngIf='!loading'>
+  <div class="row">
+    <div class="col-md-6 col-lg-6 col-sm-6">
+      <input class='pull-right' type="text" [(ngModel)]="searchString" placeholder="Search by Child Subject">
+    </div>
+  </div>
+  <div class="table-responsive-lg table-responsive-md">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Course Id</th>
+          <th scope="col">Course Name</th>
+          <th scope="col">Provider</th>
+          <th scope="col">Universities</th>
+          <th scope="col">Parent Subject</th>
+          <th scope="col">Child Subject</th>
+          <th scope="col">Url</th>
+          <th scope="col" class="cursor" (click)='sortByNextSessionDate()'><span>Next Session Date</span>
+            <span *ngIf='noShowDate' [ngClass]="[sortTypeDate ? 'arrow-down' : 'arrow-up']"></span></th>
+          <th scope="col" class="cursor" (click)='sortByLength()'><span>Length</span>
+            <span *ngIf='noShowLength' [ngClass]="[sortTypeLength ? 'arrow-down' : 'arrow-up']"></span></th>
+          <th>Video</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of apiResponse | childSubject : searchString">
+          <td class="wrap-word">{{row['Course Id']}}</td>
+          <td class="wrap-word courseName">{{row['Course Name']}}</td>
+          <td class="wrap-word courseName">{{row.Provider}}</td>
+          <td class="wrap-word universityName">{{row.Universities?.Institutions}}</td>
+          <td class="wrap-word courseName">{{row['Parent Subject']}}</td>
+          <td class="wrap-word courseName">{{row['Child Subject']}}</td>
+          <td class="ellipsis" title="{{row.Url}}">{{row.Url}}</td>
+          <td class="wrap-word">{{row['Next Session Date']}}</td>
+          <td class="wrap-word">{{row.Length}}</td>
+          <td class="ellipsis" title="{{row['Video(Url)']}}">{{row['Video(Url)']}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf='noResponse'>Unable to load data. Please try again later.</div>
+  </div>
+</div>
